@@ -12,12 +12,15 @@ import { createIssueSchema } from '@/helpers/validationSchema'
 
 import 'easymde/dist/easymde.min.css'
 import ErrorMessage from '@/app/components/ErrorMessage'
+import Spinner from '@/app/components/Spinner'
 
 type IssueCreateForm = z.infer<typeof createIssueSchema>
 
 export default function CreateIssuePage() {
   const router = useRouter()
   const [error, setError] = React.useState<string>('')
+  const [loading, setLoading] = React.useState<boolean>(false)
+
   const {
     register,
     control,
@@ -37,11 +40,14 @@ export default function CreateIssuePage() {
       <form
         className="max-w-xl space-y-3"
         onSubmit={handleSubmit(async (data) => {
+          setLoading(true)
           try {
             await axios.post('/api/issues', data)
             router.replace('/issues')
           } catch (error) {
             setError('Unexpected error occurred!')
+          } finally {
+            setLoading(true)
           }
         })}
       >
@@ -58,7 +64,10 @@ export default function CreateIssuePage() {
           )}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button className="cursor-pointer">Submit New Issue</Button>
+        <Button disabled={loading} className="cursor-pointer">
+          Submit New Issue
+          {loading && <Spinner />}
+        </Button>
       </form>
     </section>
   )
