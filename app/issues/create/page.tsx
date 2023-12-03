@@ -30,6 +30,18 @@ export default function CreateIssuePage() {
     resolver: zodResolver(createIssueSchema),
   })
 
+  const onSubmit = handleSubmit(async (data) => {
+    setLoading(true)
+    try {
+      await axios.post('/api/issues', data)
+      router.replace('/issues')
+    } catch (error) {
+      setError('Unexpected error occurred!')
+    } finally {
+      setLoading(true)
+    }
+  })
+
   return (
     <section className="max-w-xl">
       {error && (
@@ -37,20 +49,7 @@ export default function CreateIssuePage() {
           <Callout.Text color="red">{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        className="max-w-xl space-y-3"
-        onSubmit={handleSubmit(async (data) => {
-          setLoading(true)
-          try {
-            await axios.post('/api/issues', data)
-            router.replace('/issues')
-          } catch (error) {
-            setError('Unexpected error occurred!')
-          } finally {
-            setLoading(true)
-          }
-        })}
-      >
+      <form className="max-w-xl space-y-3" onSubmit={onSubmit}>
         <TextField.Root>
           <TextField.Input placeholder="Title" {...register('title')} />
         </TextField.Root>
