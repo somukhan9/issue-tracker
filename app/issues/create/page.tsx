@@ -11,6 +11,7 @@ import { z } from 'zod'
 import { createIssueSchema } from '@/helpers/validationSchema'
 
 import 'easymde/dist/easymde.min.css'
+import ErrorMessage from '@/app/components/ErrorMessage'
 
 type IssueCreateForm = z.infer<typeof createIssueSchema>
 
@@ -47,11 +48,8 @@ export default function CreateIssuePage() {
         <TextField.Root>
           <TextField.Input placeholder="Title" {...register('title')} />
         </TextField.Root>
-        {errors.title && (
-          <Text color="red" as="p">
-            {errors.title.message}
-          </Text>
-        )}
+
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
           name="description"
           control={control}
@@ -59,11 +57,7 @@ export default function CreateIssuePage() {
             <SimpleMDE placeholder="Description" {...field} />
           )}
         />
-        {errors.description && (
-          <Text color="red" as="p">
-            {errors.description.message}
-          </Text>
-        )}
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
         <Button className="cursor-pointer">Submit New Issue</Button>
       </form>
     </section>
