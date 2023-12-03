@@ -1,17 +1,23 @@
 import Link from 'next/link'
 
 export default function Navbar() {
+  const links = [
+    { label: 'Dashboard', href: '/' },
+    { label: 'Issues', href: '/issues' },
+  ]
   return (
-    <nav className="flex">
+    <nav className="flex items-center h-14 space-x-6 px-6 border-b mb-5">
       <Link href="/">Logo</Link>
-      <ul className="flex">
-        <li>
-          <Link href="/dashboard">Dashboard</Link>
-        </li>
-        <li>
-          <Link href="/issues">Issues</Link>
-        </li>
-        <li></li>
+      <ul className="flex space-x-6">
+        {links.map((link) => (
+          <Link
+            key={link.label}
+            href={link.href}
+            className="text-zinc-500 hover:text-zinc-800 transition-colors"
+          >
+            {link.label}
+          </Link>
+        ))}
       </ul>
     </nav>
   )
