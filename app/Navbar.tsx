@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { AiFillBug } from 'react-icons/ai'
 
 export default function Navbar() {
   const links = [
@@ -7,7 +8,9 @@ export default function Navbar() {
   ]
   return (
     <nav className="flex items-center h-14 space-x-6 px-6 border-b mb-5">
-      <Link href="/">Logo</Link>
+      <Link href="/">
+        <AiFillBug />
+      </Link>
       <ul className="flex space-x-6">
         {links.map((link) => (
           <Link
